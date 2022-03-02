@@ -1,6 +1,6 @@
 {
     "params": {
-        "id": ":id"
+        "id": ":uid"
     },
     "authentication": {
         "users": "/users",

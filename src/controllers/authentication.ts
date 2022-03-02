@@ -1,7 +1,17 @@
 import { RequestHandler } from "express";
 
-const login: RequestHandler = (req, res) => {
-  const { mail, psw } = req.body as { mail: string; psw: string };
+export const login: RequestHandler = (req, res) => {
+  res.send("Not implemented");
+};
 
-  res.json({});
+export const getUsers: RequestHandler = (req, res) => {
+  res.send("Not implemented");
+};
+
+export const getUserById: RequestHandler = (req, res) => {
+  res.send("Not implemented");
+};
+
+export const createUser: RequestHandler = (req, res) => {
+  res.send("Not implemented");
 };
