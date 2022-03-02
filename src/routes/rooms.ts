@@ -6,18 +6,18 @@ import {
   getRooms,
   updateRoom,
 } from "../controllers/rooms";
-import * as routes from "./config.json";
+import * as routes from "./_config.json";
 
 const Route = Router({ strict: true, caseSensitive: true });
 
-Route.get(routes.main.rooms, getRooms);
+Route.get("/", getRooms);
 
-Route.get(`${routes.main.rooms}/${routes.params.id}`, getRoomById);
+Route.get(`$/${routes.params.id}`, getRoomById);
 
-Route.post(`${routes.main.rooms}/${routes.params.id}`, createRoom);
+Route.post("/", createRoom);
 
-Route.patch(`${routes.main.rooms}/${routes.params.id}`, updateRoom);
+Route.patch(`${routes.params.id}`, updateRoom);
 
-Route.delete(`${routes.main.rooms}/${routes.params.id}`, deleteRoom);
+Route.delete(`/${routes.params.id}`, deleteRoom);
 
 export { Route as roomRouter };

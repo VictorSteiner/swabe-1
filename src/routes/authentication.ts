@@ -1,16 +1,16 @@
 import { IRouterMatcher, Router } from "express";
 import { createUser, getUserById, login } from "../controllers/authentication";
-import * as routes from "./config.json";
+import * as routes from "./_config.json";
 
 const Route = Router({ strict: true, caseSensitive: true });
 
 type Token = { jwt: String };
 
 // POST /Login
-Route.post(`${routes.authentication.login}/${routes.params.id}`, login);
+Route.post(`${routes.authentication.login}`, login);
 
 // POST /user
-Route.get(routes.authentication.user, createUser);
+Route.post(routes.authentication.user, createUser);
 
 // GET /users (by id)
 Route.get(`${routes.authentication.user}/${routes.params.id}`, getUserById);
