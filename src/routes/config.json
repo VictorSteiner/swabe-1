@@ -1,0 +1,15 @@
+{
+    "params": {
+        "id": ":id"
+    },
+    "authentication": {
+        "users": "/users",
+        "user": "/users",
+        "login": "/login"
+    },
+    "main": {
+        "rooms": "/rooms",
+        "reservations": "/reservations"
+    }
+
+}

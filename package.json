@@ -1,0 +1,26 @@
+{
+  "name": "hotelmanagementsystem",
+  "version": "1.0.0",
+  "description": "assignment 1",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.ts",
+    "tsc": "tsc --watch --outDir ./dist"
+  },
+  "author": "au582434",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/node": "^17.0.21",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.6.0",
+    "tsc": "^2.0.4",
+    "typescript": "^4.6.2"
+  }
+}
