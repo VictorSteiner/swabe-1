@@ -3,7 +3,8 @@ import { Role } from "../models/user";
 import { DecodedToken, decodeTokenRole } from "./token";
 
 export const guard =
-  (roles: Role[]) => (req: Request, res: Response, next: NextFunction) => {
+  (roles: Role[], passUser: boolean = false) =>
+  (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
@@ -14,6 +15,9 @@ export const guard =
         res.sendStatus(400);
       }
       if (roles.includes(decoded.role)) {
+        if (passUser) {
+          res.locals.user = { _id: decoded._id, role: decoded.role };
+        }
         next();
       } else {
         res.sendStatus(401);

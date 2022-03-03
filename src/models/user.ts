@@ -14,19 +14,6 @@ export type IUser = {
   role: Role;
 };
 
-export type UserInput = {
-  name: string;
-  mail: string;
-  psw: string;
-  role: Role;
-};
-
-export interface UserDocument extends UserInput, mongoose.Document {
-  createdAt: Date;
-  updatetAt: Date;
-  comparePassword(cPassword: string): Promise<boolean>;
-}
-
 interface IUserModel extends Model<IUser> {}
 
 const schema = new Schema<IUser, IUserModel>({

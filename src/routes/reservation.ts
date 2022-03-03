@@ -18,7 +18,7 @@ Route.get("/", guard([Role.manager, Role.clerk]), getReservations);
 // GET /reservations/{:uid}
 Route.get(
   `/${routes.params.id}`,
-  guard([Role.manager, Role.clerk, Role.guest]),
+  guard([Role.manager, Role.clerk, Role.guest], true),
   getReservationById
 );
 
@@ -32,7 +32,7 @@ Route.post(
 // PATCH /reservations/{:uid}
 Route.patch(
   `/${routes.params.id}`,
-  guard([Role.manager, Role.clerk, Role.guest]),
+  guard([Role.manager, Role.clerk, Role.guest], true),
   updateReservation
 );
 

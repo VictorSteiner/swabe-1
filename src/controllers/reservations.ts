@@ -5,6 +5,7 @@ export const getReservations: RequestHandler = (req, res) => {
 };
 
 export const getReservationById: RequestHandler = (req, res) => {
+  console.log(res.locals.user);
   res.send("Not implemented");
 };
 
