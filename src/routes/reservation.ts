@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { guard } from "../authentication/Guard";
+import { guard } from "../authentication/guard";
 import {
   createReservation,
   deleteReservation,

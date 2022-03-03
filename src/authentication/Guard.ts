@@ -1,16 +1,18 @@
-import { NextFunction, Request, RequestHandler, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { Role, User } from "../models/user";
+import { decodeTokenRole } from "./token";
 
 export const guard =
   (roles: Role[]) => (req: Request, res: Response, next: NextFunction) => {
-    // check if user has role
-    // check if token expired
-    // find user by token from header
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
 
-    const user: User = {} as any;
-    if (roles.includes(user.role) || true) {
+    if (token === null) return res.sendStatus(401);
+
+    const { role } = decodeTokenRole(token);
+    if (roles.includes(role)) {
       next();
     } else {
-      res.status(401).send("Not authenticated!");
+      res.sendStatus(401);
     }
   };
