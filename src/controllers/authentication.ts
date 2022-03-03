@@ -28,13 +28,20 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const getUsers: RequestHandler = (req, res) => {
-  res.send("Not implemented");
+  UserModel.find()
+    .exec()
+    .then((value) => {
+      res.status(200).json({ ids: value.map(({ _id }) => _id) });
+    })
+    .catch((reason) => {
+      res.status(400).json(reason);
+    });
 };
 
 export const getUserById: RequestHandler = (req, res) => {
-  const id = req.params;
-  console.log("id", id);
-  UserModel.findById(id)
+  const { uid } = req.params;
+  console.log("id", uid);
+  UserModel.findById(uid)
     .exec()
     .then((value) => {
       res.status(200).json({

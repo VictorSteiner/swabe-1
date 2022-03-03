@@ -1,10 +1,9 @@
 import express from "express";
-import { authenticationRouter } from "./routes/authentication";
-import { roomRouter } from "./routes/rooms";
-import { reservationRouter } from "./routes/reservation";
-import * as routes from "./routes/_config.json";
 import { connect } from "mongoose";
-import { UserModel, UserSchema } from "./models/user";
+import { authenticationRouter } from "./routes/authentication";
+import { reservationRouter } from "./routes/reservation";
+import { roomRouter } from "./routes/rooms";
+import * as routes from "./routes/_config.json";
 
 require("dotenv").config();
 
