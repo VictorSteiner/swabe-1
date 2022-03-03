@@ -4,7 +4,7 @@ import { roomRouter } from "./routes/rooms";
 import { reservationRouter } from "./routes/reservation";
 import * as routes from "./routes/_config.json";
 import { connect } from "mongoose";
-import { UserModel } from "./models/user";
+import { UserModel, UserSchema } from "./models/user";
 
 require("dotenv").config();
 
@@ -13,6 +13,8 @@ const port = 3000;
 
 async function main() {
   await connect(process.env.DB_CONNECTION);
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
   app.use("/", authenticationRouter);
   app.use(routes.main.rooms, roomRouter);

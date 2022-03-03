@@ -1,28 +1,30 @@
-import { RequestHandler } from "express";
-import { generateToken } from "../authentication/token";
-import { Role } from "../models/user";
+import { compare, hash } from "bcrypt";
+import { Request, RequestHandler, Response } from "express";
+import { send } from "process";
+import { DecodedToken, generateToken } from "../authentication/token";
+import { UserModel } from "../models/user";
 
-export const login: RequestHandler = (req, res) => {
-  // FOR DEBUG ONLY!
-  const manager = generateToken({
-    mail: "manager@mail.dk",
-    name: "manager",
-    role: Role.manager,
-  });
-
-  const clerk = generateToken({
-    mail: "clerk@mail.dk",
-    name: "clerk",
-    role: Role.clerk,
-  });
-
-  const guest = generateToken({
-    mail: "guest@mail.dk",
-    name: "guest",
-    role: Role.guest,
-  });
-
-  return res.status(201).json({ manager, clerk, guest });
+export const login = async (req: Request, res: Response) => {
+  let { mail, psw } = req.body;
+  UserModel.findOne({ mail })
+    .exec()
+    .then(async (value) => {
+      try {
+        if (!(await compare(psw, value.psw.toString()))) {
+          throw new Error();
+        }
+        const user: DecodedToken = {
+          _id: value.id,
+          mail: value.mail,
+          name: value.name,
+          role: value.role,
+        };
+        const token = generateToken(user);
+        res.status(200).json({ token });
+      } catch (error) {
+        res.status(401).json(error);
+      }
+    });
 };
 
 export const getUsers: RequestHandler = (req, res) => {
@@ -30,9 +32,31 @@ export const getUsers: RequestHandler = (req, res) => {
 };
 
 export const getUserById: RequestHandler = (req, res) => {
-  res.send("Not implemented");
+  const id = req.params;
+  console.log("id", id);
+  UserModel.findById(id)
+    .exec()
+    .then((value) => {
+      res.status(200).json({
+        _id: value.id,
+        mail: value.mail,
+        name: value.name,
+        role: value.role,
+      });
+    })
+    .catch((reason) => {
+      res.status(400).json(reason);
+    });
 };
 
-export const createUser: RequestHandler = (req, res) => {
-  res.send("Not implemented");
+export const createUser: RequestHandler = async (req, res) => {
+  let user = req.body;
+  user.psw = await hash(req.body.psw, 12);
+  UserModel.create(user, (error, result) => {
+    if (error) {
+      res.sendStatus(400).json({ ...error });
+    } else {
+      res.status(201).json({ _id: result.id });
+    }
+  });
 };

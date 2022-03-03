@@ -31,7 +31,8 @@ interface IUserModel extends Model<IUser> {}
 
 const schema = new Schema<IUser, IUserModel>({
   name: { type: String, required: true },
-  mail: { type: String, required: true },
+  mail: { type: String, required: true, unique: true },
+  psw: { type: String, required: true },
   role: { type: String, required: true, enum: Role },
 });
 
