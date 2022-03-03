@@ -4,12 +4,11 @@
     },
     "authentication": {
         "users": "/users",
-        "user": "/users",
+        "user": "/user",
         "login": "/login"
     },
     "main": {
         "rooms": "/rooms",
         "reservations": "/reservations"
     }
-
 }
