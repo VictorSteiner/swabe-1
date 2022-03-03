@@ -9,7 +9,7 @@ export type IRoom = {
 interface IRoomModel extends Model<IRoom> {}
 
 const schema = new Schema<IRoom, IRoomModel>({
-  roomNumber: { type: Number, required: true },
+  roomNumber: { type: Number, required: true, unique: true },
   available: { type: Boolean, required: true, default: true },
 });
 

@@ -39,9 +39,7 @@ export const getUsers: RequestHandler = (req, res) => {
 };
 
 export const getUserById: RequestHandler = (req, res) => {
-  const { uid } = req.params;
-  console.log("id", uid);
-  UserModel.findById(uid)
+  UserModel.findById(req.params.uid)
     .exec()
     .then((value) => {
       res.status(200).json({
@@ -61,7 +59,7 @@ export const createUser: RequestHandler = async (req, res) => {
   user.psw = await hash(req.body.psw, 12);
   UserModel.create(user, (error, result) => {
     if (error) {
-      res.sendStatus(400).json({ ...error });
+      res.status(400).json({ ...error });
     } else {
       res.status(201).json({ _id: result.id });
     }
