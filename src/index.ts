@@ -4,20 +4,25 @@ import { roomRouter } from "./routes/rooms";
 import { reservationRouter } from "./routes/reservation";
 import * as routes from "./routes/_config.json";
 import { connect } from "mongoose";
+import { UserModel } from "./models/user";
 
 require("dotenv").config();
 
 const app = express();
 const port = 3000;
 
-connect(process.env.DB_CONNECTION);
+async function main() {
+  await connect(process.env.DB_CONNECTION);
 
-app.use("/", authenticationRouter);
-app.use(routes.main.rooms, roomRouter);
-app.use(routes.main.reservations, reservationRouter);
+  app.use("/", authenticationRouter);
+  app.use(routes.main.rooms, roomRouter);
+  app.use(routes.main.reservations, reservationRouter);
 
-app.get("/", (_, res) => res.status(200).send("OK"));
+  app.get("/", (_, res) => res.status(200).send("OK"));
 
-app.listen(port, () => {
-  console.log(`Listening on port: ${port}`);
-});
+  app.listen(port, () => {
+    console.log(`Listening on port: ${port}`);
+  });
+}
+
+main();
