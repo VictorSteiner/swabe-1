@@ -22,10 +22,10 @@ Route.get(
   getReservationById
 );
 
-// POST /reservations/{:uid}
+// POST /reservations/
 Route.post(
   "/",
-  guard([Role.manager, Role.clerk, Role.guest]),
+  guard([Role.manager, Role.clerk, Role.guest], true),
   createReservation
 );
 

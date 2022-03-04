@@ -1,23 +1,32 @@
 import { RequestHandler } from "express";
-import { RoomModel } from "../models/room";
-import { Types } from "mongoose";
+import { ReservationModel } from "../models/reservation";
+import { IRoom, RoomModel } from "../models/room";
 
-export const getRooms: RequestHandler = (req, res) => {
-  const { available } = req.body;
-  RoomModel.find()
-    .exec()
-    .then((value) => {
-      res
-        .status(200)
-        .json(
-          available !== undefined
-            ? value.filter((room) => room.available === available)
-            : value
-        );
-    })
-    .catch((reason) => {
-      res.status(400).json(reason);
-    });
+export const getRooms: RequestHandler = async (req, res) => {
+  const { date } = req.body;
+  try {
+    const rooms = await RoomModel.find().exec();
+    if (date === undefined) {
+      res.status(200).json(rooms);
+    } else {
+      const roomReservated = (await ReservationModel.find().exec())
+        .filter(
+          (reservation) => date > reservation.start && reservation.end > date
+        )
+        .map(({ room }) => room);
+      const reservatedIds = roomReservated.map(({ roomNumber }) => roomNumber);
+
+      const availableRooms = rooms.reduce<IRoom[]>((acc, cur) => {
+        if (!reservatedIds.includes(cur.roomNumber)) {
+          acc.push(cur);
+        }
+        return acc;
+      }, []);
+      res.status(200).json(availableRooms);
+    }
+  } catch (error) {
+    res.status(400).json(error);
+  }
 };
 
 export const getRoomById: RequestHandler = (req, res) => {
@@ -32,6 +41,8 @@ export const getRoomById: RequestHandler = (req, res) => {
 };
 
 export const createRoom: RequestHandler = (req, res) => {
+  console.log(req.params.uid);
+
   RoomModel.create({ roomNumber: req.params.uid }, (error, result) => {
     if (error) {
       res.status(400).json({ ...error });
