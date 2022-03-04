@@ -1,6 +1,5 @@
 import { compare, hash } from "bcrypt";
 import { Request, RequestHandler, Response } from "express";
-import { send } from "process";
 import { DecodedToken, generateToken } from "../authentication/token";
 import { UserModel } from "../models/user";
 

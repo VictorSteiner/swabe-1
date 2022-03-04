@@ -22,8 +22,8 @@ Route.get(
   getRoomById
 );
 
-// POST /rooms/
-Route.post("/", guard([Role.manager]), createRoom);
+// POST /rooms/{:uid}
+Route.post(`/${routes.params.id}`, guard([Role.manager]), createRoom);
 
 // PATCH /rooms/{:uid}
 Route.patch(
@@ -33,6 +33,6 @@ Route.patch(
 );
 
 // DELETE /rooms/{:uid}
-Route.delete(`${routes.params.id}`, guard([Role.manager]), deleteRoom);
+Route.delete(`/${routes.params.id}`, guard([Role.manager]), deleteRoom);
 
 export { Route as roomRouter };

@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import { RoomModel } from "../models/room";
-import { roomRouter } from "../routes/rooms";
+import { Types } from "mongoose";
 
 export const getRooms: RequestHandler = (req, res) => {
   const { available } = req.body;
@@ -21,7 +21,7 @@ export const getRooms: RequestHandler = (req, res) => {
 };
 
 export const getRoomById: RequestHandler = (req, res) => {
-  RoomModel.findById(req.params.uid)
+  RoomModel.findOne({ roomNumber: req.params.uid })
     .exec()
     .then((value) => {
       res.status(200).json(value);
@@ -32,27 +32,32 @@ export const getRoomById: RequestHandler = (req, res) => {
 };
 
 export const createRoom: RequestHandler = (req, res) => {
-  RoomModel.create(req.body, (error, result) => {
+  RoomModel.create({ roomNumber: req.params.uid }, (error, result) => {
     if (error) {
-      res.sendStatus(400).json({ ...error });
+      res.status(400).json({ ...error });
     } else {
-      res.status(201).json({ _id: result.id });
+      res.status(201).json({ roomNumber: result.roomNumber });
     }
   });
 };
 
 export const updateRoom: RequestHandler = (req, res) => {
-  RoomModel.findByIdAndUpdate(req.params.uid, req.body, (err, doc) => {
-    if (err) {
-      res.status(400).json(err);
-    } else {
-      res.status(200).json(doc);
+  RoomModel.findOneAndUpdate(
+    { roomNumber: req.params.uid },
+    req.body,
+    { new: true },
+    (err, doc) => {
+      if (err) {
+        res.status(400).json(err);
+      } else {
+        res.status(200).json(doc);
+      }
     }
-  });
+  );
 };
 
 export const deleteRoom: RequestHandler = (req, res) => {
-  RoomModel.findByIdAndDelete(req.params.uid)
+  RoomModel.findOneAndDelete({ roomNumber: req.params.uid })
     .exec()
     .then(() => {
       res.sendStatus(204);
